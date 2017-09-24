@@ -1,0 +1,11 @@
+name,email,date,BTC,ETH,NEO
+fred,fred@example.com,17/05/21,0.201269841269841,3.30208333333333,1232.77777777778
+alice,alice@example.com,17/05/21,0.100634920634921,1.65104166666667,352.222222222222
+alice,alice@example.com,17/06/12,0.081282051282051,0.603809523809524,176.111111111111
+alice,alice@example.com,17/06/12,0,0,1056.66666666667
+fred,fred@example.com,17/06/23,,,-130.051282051282
+alice,alice@example.com,17/06/23,,,-65.025641025641
+alice,alice@example.com,17/06/23,,,-65.025641025641
+alice,alice@example.com,17/06/23,,,-130.051282051282
+alice,alice@example.com,17/08/05,,,-132.4897436
+fred,fred@example.com,17/08/12,,,-110.2726496

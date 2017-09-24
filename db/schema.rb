@@ -20,7 +20,7 @@ ActiveRecord::Schema.define(version: 20171011114908) do
     t.string   "code"
     t.datetime "created_at",                                  null: false
     t.datetime "updated_at",                                  null: false
-    t.integer  "central_reserve_in_sub_units", default: 0,    null: false
+    t.bigint   "central_reserve_in_sub_units", default: 0,    null: false
     t.boolean  "crypto_currency",              default: true, null: false
     t.integer  "subdivision",                  default: 8,    null: false
     t.index ["code"], name: "index_coins_on_code", unique: true, using: :btree
@@ -35,7 +35,7 @@ ActiveRecord::Schema.define(version: 20171011114908) do
     t.boolean  "deposit",                                   default: false, null: false
     t.boolean  "withdrawal",                                default: false, null: false
     t.integer  "portfolio_id",                                              null: false
-    t.integer  "quantity",                                                  null: false
+    t.bigint   "quantity",                                                  null: false
     t.index ["coin_id", "portfolio_id"], name: "index_holdings_on_coin_id_and_portfolio_id", unique: true, using: :btree
     t.index ["member_plan_id"], name: "index_holdings_on_member_plan_id", using: :btree
     t.index ["portfolio_id"], name: "index_holdings_on_portfolio_id", using: :btree

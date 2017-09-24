@@ -18,8 +18,8 @@ class Portfolio < ApplicationRecord
     return if !new_next_portfolio || next_portfolio_id
     new_next_portfolio.member = member
     self.class.transaction do
-      update(next_portfolio_at: Time.current)
-      update(next_portfolio_id: new_next_portfolio.tap(&:save).id)
+      update!(next_portfolio_at: Time.current)
+      update!(next_portfolio_id: new_next_portfolio.tap(&:save!).id)
     end
   end
 

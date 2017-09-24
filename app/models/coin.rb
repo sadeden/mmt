@@ -30,7 +30,7 @@ class Coin < ApplicationRecord
 
   # @return <Integer> The value of the live holdings
   def live_holdings_quantity
-    live_holdings.sum(:quantity) || 0
+    live_holdings.where(coin: self).sum(:quantity) || 0
   end
 
   def live_holdings_quantity_display
