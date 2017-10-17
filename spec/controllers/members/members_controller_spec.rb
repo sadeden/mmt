@@ -8,6 +8,15 @@ describe Members::MembersController do
 
   before { sign_in member }
 
+  describe "GET #index" do
+    let(:get_index) { get :index }
+
+    it "returns a 200" do
+      get_index
+      expect(response.status).to eq 200
+    end
+  end
+
   describe "GET #show" do
     let(:get_show) { get :show, params: { id: member.id } }
 
@@ -30,14 +39,27 @@ describe Members::MembersController do
       let(:params) { { id: member.id, member: { username: Faker::Internet.user_name }, format: :json } }
       let(:patch_update) { patch :update, params: params }
 
-      it 'updates the member' do
-        expect{ patch_update }.to change{ member.reload.username }
+
+      context 'valid' do
+        it 'updates the member' do
+          expect{ patch_update }.to change{ member.reload.username }
+        end
+
+        it 'renders JSON response' do
+          patch_update
+          expect(json['success']).to be_truthy
+          expect(json['member']['id']).to eq member.id
+        end
       end
 
-      it 'renders JSON response' do
-        patch_update
-        expect(json['success']).to be_truthy
-        expect(json['member']['id']).to eq member.id
+      context 'invalid' do
+        before { allow_any_instance_of(Member).to receive(:save).and_return false }
+
+        it 'renders JSON response' do
+          patch_update
+          expect(json['success']).to be_falsey
+          expect(json['member']['id']).to eq member.id
+        end
       end
     end
 
