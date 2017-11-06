@@ -2,7 +2,7 @@
   .four.columns
     p
       | Current central reserve balance : 
-      strong= number_to_currency(@coin.central_reserve, precision: @coin.subdivision, unit: '')
+      strong= number_to_currency(@coin.central_reserve / 10**@coin.subdivision, precision: @coin.subdivision, unit: '')
   .four.columns
     h2 #{@coin.name} (#{@coin.code}) Transaction History
   .four.columns
