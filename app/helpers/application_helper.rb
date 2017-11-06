@@ -2,7 +2,9 @@
 
 module ApplicationHelper
   def flash_notices
-    raw([:notice, :error, :alert].map { |type| content_tag("div", flash[type], id: type, class: 'flash') if flash[type].present? }.join)
+    raw([:notice, :error, :alert].map do |type|
+      render(partial: "shared/notice", locals: { message: flash[type], type: type }) unless flash[type].blank?
+    end.join)
   end
 
   def link_to_add_fields(name, f, association)
