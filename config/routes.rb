@@ -17,8 +17,14 @@ Rails.application.routes.draw do
 
   namespace :admins do
     root to: 'dashboard#index'
-    resources :portfolios, only: [:index, :new, :create, :show]
-    resources :coins, only: [:index, :edit, :update]
+
+    post '/coins/:id/load' => 'coins#load', as: :load_coin
+    get '/coins/:id/history' => 'coins#history', as: :coin_history
+
+    resources :coins, only: [:index, :edit, :update], path_names: { edit: 'load' } do
+      resources :allocations, only: [:new, :create]
+    end
+
     resources :members, only: [:index, :new, :create, :edit]
   end
 
@@ -41,8 +47,13 @@ Rails.application.routes.draw do
 
   scope module: :members do
     root to: "dashboard#index"
-    resources :portfolios, only: [:show]
+
+    scope path: :trade do
+      resources :coins, only: [:index, :show] do
+        post '/purchases' => 'purchases#create', as: :purchase
+      end
+    end
+
     resources :members, path: '/', only: [:show, :update]
   end
-
 end
