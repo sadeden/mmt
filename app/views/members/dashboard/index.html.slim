@@ -1,0 +1,44 @@
+.row
+  .four.columns
+    br
+  .four.columns
+    h2 Purchase History
+  .four.columns
+    br
+.row
+  .twelve.columns
+    table width="100%"
+      thead
+        tr
+          th Sold Coin
+          th Purchased Coin
+      tbody
+        - @purchases.each do |purchase|
+          tr
+            td= purchase.data[:source_coin_id]
+            td= purchase.data[:destination_coin_id]
+
+p * ToP = Time of Purchase
+.row
+  .four.columns
+    br
+  .four.columns
+    h2 Transaction History
+  .four.columns
+    br
+.row
+  .twelve.columns
+    table width="100%"
+      thead
+        tr
+          th Action
+          th Quantity
+          th Rate (ToP)
+      tbody
+        - @transactions.each do |transaction|
+          tr
+            td= transaction.class
+            td= transaction.data[:quantity] / 10**transaction.data[:subdivision]
+            td= transaction.data[:rate]
+
+p * ToP = Time of Purchase

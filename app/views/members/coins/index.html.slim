@@ -1,0 +1,18 @@
+table width="100%"
+  thead
+    tr
+      th Coin
+      th Code
+      th Balance
+      th
+        span.right Actions
+  tbody
+    - Coin.all.each do |coin|
+      tr
+        td= coin.name
+        td= coin.code
+        td= number_to_currency(current_member.coin_balance(coin.id) / 10**coin.subdivision, precision: coin.subdivision, unit: '')
+        td
+          .icons
+            = link_to coin_path(coin), class: 'icon' do
+              i.fa.fa-shopping-cart.fa-lg

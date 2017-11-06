@@ -1,12 +1,10 @@
-=link_to "New portfolio", new_admins_portfolio_path, class: "button"
-
 table
   thead
     th Email
     th Value (when created)
     th Created at
   tbody
-    - @portfolios.each do |portfolio|
+    - Member.all.each do |member|
       tr
         td= portfolio.member.email
         td= portfolio.initial_btc_value
