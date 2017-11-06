@@ -6,7 +6,6 @@ module Domain
 
     def load!
       coin = ::Coin.find coin_id
-      binding.pry
       apply Events::Coin::Loaded.new(data: {
         member_id: member_id,
         quantity: coin.store_as_integer(quantity),

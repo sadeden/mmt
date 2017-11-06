@@ -10,11 +10,11 @@ module Domain
         source_coin_id: source_coin_id,
         source_rate: source_rate,
         source_quantity: source_coin.store_as_integer(source_quantity),
-        source_subdivision: coin.subdivision,
+        source_subdivision: source_coin.subdivision,
         destination_coin_id: destination_coin_id,
         destination_rate: destination_rate,
         destination_quantity: destination_coin.store_as_integer(destination_quantity),
-        destination_subdivision: coin.subdivision,
+        destination_subdivision: destination_coin.subdivision,
         member_id: member_id
       })
     end
