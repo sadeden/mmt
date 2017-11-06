@@ -60,19 +60,11 @@ class Member < ApplicationRecord
   end
 
   def increment(coin_id)
-    ->(state, event) do
-      if event.data[:coin_id] == coin_id
-        state[:total] += event.data[:quantity]
-      end
-    end
+    ->(state, event) { state[:total] += event.data[:quantity] if event.data[:coin_id] == coin_id }
   end
 
   def decrement(coin_id)
-    ->(state, event) do
-      if event.data[:coin_id] == coin_id
-        state[:total] -= event.data[:quantity]
-      end
-    end
+    ->(state, event) { state[:total] -= event.data[:quantity] if event.data[:coin_id] == coin_id }
   end
 
   # ===> Two Factor Authentication

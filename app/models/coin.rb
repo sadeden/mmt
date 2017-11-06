@@ -58,23 +58,6 @@ class Coin < ApplicationRecord
     crypto_currency ? crypto_btc_rate : fiat_btc_rate
   end
 
-  # def central_reserve
-  #   BigDecimal.new(central_reserve_in_sub_units) / 10**subdivision
-  # end
-
-  # @return <Integer> The value of the live assets
-  # def live_assets_quantity
-  #   live_assets.sum(:quantity) || 0
-  # end
-
-  # def live_assets_quantity_display
-  #   live_assets_quantity / 10**subdivision
-  # end
-
-  # def max_buyable_quantity
-  #   central_reserve_in_sub_units - live_assets_quantity
-  # end
-
   private
 
   def fiat_btc_rate(iso_currency = nil)
