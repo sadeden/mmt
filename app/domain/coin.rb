@@ -4,17 +4,6 @@ module Domain
   class Coin < OpenStruct
     include AggregateRoot
 
-    def load!
-      coin = ::Coin.find coin_id
-      apply Events::Coin::Loaded.new(data: {
-        member_id: member_id,
-        quantity: coin.store_as_integer(quantity),
-        subdivision: coin.subdivision,
-        rate: rate,
-        by: member.email
-      })
-    end
-
     def allocate!
       coin = ::Coin.find coin_id
       apply Events::Coin::Allocation.new(data: {
@@ -40,9 +29,6 @@ module Domain
     end
 
     private
-
-    def apply_loaded(event)
-    end
 
     def apply_allocation(event)
     end

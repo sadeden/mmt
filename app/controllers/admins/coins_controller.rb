@@ -31,11 +31,10 @@ module Admins
     end
 
     def load_coin
-      @load_coin = LoadCoin.call(
+      @load_coin = LoadCoin.call(load_params: load_params.merge(
         coin_id: @coin.id,
-        member_id: current_member.id,
-        load_params: load_params
-      )
+        member_id: current_member.id
+      ))
     end
 
     def load_params

@@ -24,7 +24,6 @@ class Coin < ApplicationRecord
 
   def central_reserve
     RailsEventStore::Projection.from_stream(stream_name).init( -> { { total: BigDecimal.new(0) } })
-      .when(Events::Coin::Loaded, increment)
       .when(Events::Coin::Allocation, increment)
       .when(Events::Coin::Deallocation, decrement)
       .run(Rails.application.config.event_store)[:total]
