@@ -4,21 +4,51 @@ class Coin < ApplicationRecord
   extend FriendlyId
   friendly_id :code, use: :slugged
 
-  has_many :holdings
-  has_many :live_portfolios, -> { live }, through: :holdings, source: :portfolio
-  has_many :live_holdings, through: :live_portfolios, class_name: "Holding", source: :holdings
-
   scope :ordered, -> { order(:code) }
+  scope :crypto, -> { where(crypto_currency: true) }
+  scope :not_self, ->(coin_id) { where.not(id: coin_id) }
 
-  attr_readonly :code
+  attr_readonly :code, :subdivision
 
-  validates :code, uniqueness: { case_sensitive: true }, format: { with: /\A[a-zA-Z0-9_\.]*\z/ }
-  validate :code_against_inaccessible_words
-  validates :subdivision, :code, presence: true
-  validates :subdivision, numericality: { greater_than_or_equal_to: 0 }
-  validates :central_reserve_in_sub_units, numericality: { greater_than: :live_holdings_quantity }
+  validates :subdivision, presence: true,
+                          numericality: { greater_than_or_equal_to: 0 }
 
-  before_validation :adjust_slug, on: :update, if: proc { |c| c.code_changed? }
+  validates :code, uniqueness: { case_sensitive: true },
+                   format: { with: /\A[a-zA-Z0-9_\.]*\z/ },
+                   exclusion: { in: MagicMoneyTree::InaccessibleWords.all },
+                   presence: true
+
+  def stream_name
+    "Domain::Coin$#{id}"
+  end
+
+  def central_reserve
+    RailsEventStore::Projection.from_stream(stream_name).init( -> { { total: BigDecimal.new(0) } })
+      .when(Events::Coin::Loaded, increment)
+      .when(Events::Coin::Allocation, increment)
+      .when(Events::Coin::Deallocation, decrement)
+      .run(Rails.application.config.event_store)[:total]
+  end
+
+  def increment
+    ->(state, event) { state[:total] += event.data[:quantity] }
+  end
+
+  def decrement
+    ->(state, event) { state[:total] -= event.data[:quantity] }
+  end
+
+  def history
+    Rails.application.config.event_store.read_stream_events_forward("Domain::Coin$#{id}")
+  end
+
+  def store_as_integer(quantity)
+    (BigDecimal.new(quantity) * (10 ** subdivision)).to_i
+  end
+
+  def read_as_decimal(quantity)
+    quantity.to_d / (10 ** subdivision)
+  end
 
   def value(iso_currency)
     btc_rate * 1.0 / fiat_btc_rate(iso_currency)
@@ -29,22 +59,22 @@ class Coin < ApplicationRecord
     crypto_currency ? crypto_btc_rate : fiat_btc_rate
   end
 
-  def central_reserve
-    BigDecimal.new(central_reserve_in_sub_units) / 10**subdivision
-  end
+  # def central_reserve
+  #   BigDecimal.new(central_reserve_in_sub_units) / 10**subdivision
+  # end
 
-  # @return <Integer> The value of the live holdings
-  def live_holdings_quantity
-    live_holdings.sum(:quantity) || 0
-  end
+  # @return <Integer> The value of the live assets
+  # def live_assets_quantity
+  #   live_assets.sum(:quantity) || 0
+  # end
 
-  def live_holdings_quantity_display
-    live_holdings_quantity / 10**subdivision
-  end
+  # def live_assets_quantity_display
+  #   live_assets_quantity / 10**subdivision
+  # end
 
-  def max_buyable_quantity
-    central_reserve_in_sub_units - live_holdings_quantity
-  end
+  # def max_buyable_quantity
+  #   central_reserve_in_sub_units - live_assets_quantity
+  # end
 
   private
 
@@ -85,13 +115,5 @@ class Coin < ApplicationRecord
     return unless subdivision
     return unless (subdivision % 10).zero?
     errors.add :subdivision, "must be a multiple of 10"
-  end
-
-  def code_against_inaccessible_words
-    errors.add(:code, :invalid) if MagicMoneyTree::InaccessibleWords.all.include? code.downcase
-  end
-
-  def adjust_slug
-    self.slug = code
   end
 end

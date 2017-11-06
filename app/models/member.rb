@@ -16,12 +16,6 @@ class Member < ApplicationRecord
   extend FriendlyId
   friendly_id :username, use: :slugged
 
-  has_one :live_portfolio, -> { live }, foreign_key: :member_id, class_name: "Portfolio"
-  has_many :portfolios
-  has_many :holdings, through: :live_portfolio
-
-  scope :no_portfolio, -> { includes(:live_portfolio).where(portfolios: { id: nil }).references(:portfolios) }
-
   TWO_FACTOR_DELIVERY_METHODS = { sms: 'Short message service (SMS)', app: 'Authenticator application' }.with_indifferent_access
 
   validates :username, uniqueness: { case_sensitive: true }, format: { with: /^[a-zA-Z0-9_\.]*$/, multiline: true }, presence: true
@@ -38,6 +32,48 @@ class Member < ApplicationRecord
   before_validation :adjust_slug, on: :update, if: proc { |m| m.username_changed? }
 
   attr_accessor :login
+
+  # ===> Events & Assets
+
+  def stream_name
+    "Domain::Member$#{id}"
+  end
+
+  def transaction_history
+    RailsEventStore::Projection.from_stream(stream_name).init( -> { Array.new } )
+      .when(Events::Member::Allocation, ->(state, event) { state << event })
+      .when(Events::Member::Deallocation, ->(state, event) { state << event })
+      .run(Rails.application.config.event_store)
+  end
+
+  def purchase_history
+    RailsEventStore::Projection.from_stream(stream_name).init( ->{ Array.new })
+      .when(Events::Member::Purchase, ->(state, event) { state << event })
+      .run(Rails.application.config.event_store)
+  end
+
+  def coin_balance(coin_id)
+    RailsEventStore::Projection.from_stream(stream_name).init(->{ { total: BigDecimal.new(0) } })
+      .when(Events::Member::Allocation, increment(coin_id))
+      .when(Events::Member::Deallocation, decrement(coin_id))
+      .run(Rails.application.config.event_store)[:total]
+  end
+
+  def increment(coin_id)
+    ->(state, event) do
+      if event.data[:coin_id] == coin_id
+        state[:total] += event.data[:quantity]
+      end
+    end
+  end
+
+  def decrement(coin_id)
+    ->(state, event) do
+      if event.data[:coin_id] == coin_id
+        state[:total] -= event.data[:quantity]
+      end
+    end
+  end
 
   # ===> Two Factor Authentication
 
