@@ -2,7 +2,8 @@
 
 module Admins
   class CoinsController < AdminsController
-    before_action :find_coin, only: [:edit, :update]
+    before_action :find_coin, only: [:edit, :load, :history]
+    before_action :load_coin, only: [:load]
 
     def index
       @coins = Coin.all
@@ -11,21 +12,34 @@ module Admins
     def edit
     end
 
-    def update
-      # %%TODO%% UPDATE ACTION must be replaced with build new coin with new central reserve value is central reserve is being updated!!!
-      if @coin.update coin_params
-        flash[:success] = "Coin created"
-        redirect_to action: :index
+    def load
+      if @load_coin.success?
+        redirect_to admins_coins_path, notice: @load_coin.notice
       else
-        flash[:error] = "Coin failed to be created"
-        render :new
+        redirect_to admins_coins_path, error: @load_coin.error
       end
+    end
+
+    def history
+      @events = @coin.history
     end
 
     private
 
     def find_coin
       @coin ||= Coin.friendly.find params[:id]
+    end
+
+    def load_coin
+      @load_coin = LoadCoin.call(
+        coin_id: @coin.id,
+        member_id: current_member.id,
+        load_params: load_params
+      )
+    end
+
+    def load_params
+      params.require(:coin).permit(:quantity, :rate)
     end
 
     def coin_params
