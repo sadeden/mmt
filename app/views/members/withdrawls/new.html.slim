@@ -1,0 +1,13 @@
+h2
+  | Withdraw #{@coin.header}
+
+p
+  | Your balance of #{@coin.code} is #{@coin.balance}
+
+= form_for :withdrawl, url: withdrawl_path(@coin.id), method: :post do |f|
+  .row
+    = f.label :quantity
+    = text_field_tag 'withdrawl[quantity]', number_with_precision(0, precision: @coin.subdivision), required: true
+  br
+  .row
+    = f.submit 'Withdraw'

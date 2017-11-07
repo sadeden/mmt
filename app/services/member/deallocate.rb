@@ -24,8 +24,9 @@ module Services
       def ensure_less_than_balance
         coin = ::Coin.find coin_id
         member = ::Member.find member_id
-        return if coin && coin.store_as_integer(quantity) < member.coin_balance(coin_id)
-        errors.add :quantity, "Must be less than #{central_reserve}"
+        balance = member.coin_balance(coin_id)
+        return if coin && coin.store_as_integer(quantity) < balance
+        errors.add :quantity, "Balance too low to deallocate #{quantity}"
       end
     end
   end

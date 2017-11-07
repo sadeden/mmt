@@ -53,7 +53,13 @@ Rails.application.routes.draw do
     scope path: :trade do
       root to: 'purchases#index', as: :purchases
       get '/:coin_id' => 'purchases#new', as: :new_purchase
-      post '/:coin_id/' => 'purchases#create', as: :purchase
+      post '/:coin_id' => 'purchases#create', as: :purchase
+    end
+
+    scope path: :withdraw do
+      root to: 'withdrawls#index', as: :withdrawls
+      get '/:coin_id' => 'withdrawls#new', as: :new_withdrawl
+      post '/:coin_id' => 'withdrawls#create', as: :withdrawl
     end
 
     resources :members, path: '/', only: [:show, :update]

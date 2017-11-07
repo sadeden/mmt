@@ -17,7 +17,6 @@ module Services
       def handler_class
         Handlers::Member::Allocate
       end
-
     end
   end
 end

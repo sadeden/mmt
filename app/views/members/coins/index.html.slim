@@ -24,6 +24,8 @@
                 .icons
                   = link_to purchase_path(coin), class: 'icon' do
                     i.fa.fa-shopping-cart.fa-lg
+                  = link_to withdrawl_path(coin), class: 'icon' do
+                    i.fa.fa-btc.fa-lg
 
 - if @fiat.any?
   .row
@@ -50,3 +52,6 @@
                 .icons
                   = link_to purchase_path(coin), class: 'icon' do
                     i.fa.fa-shopping-cart.fa-lg
+                  = link_to withdrawl_path(coin), class: 'icon' do
+                    i.fa.fa-btc.fa-lg
+

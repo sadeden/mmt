@@ -44,6 +44,7 @@ module Domain
       apply Events::Member::Withdrawl.new(data: {
         coin_id: coin_id,
         quantity: coin.store_as_integer(quantity),
+        subdivision: coin.subdivision,
         rate: rate
       })
     end

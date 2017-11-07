@@ -7,7 +7,7 @@ module Handlers
 
       def call(transaction)
         with_aggregate(Domain::Member, transaction.aggregate_id, attributes(transaction)) do |member|
-          member.assign!
+          member.withdraw!
         end
       end
 

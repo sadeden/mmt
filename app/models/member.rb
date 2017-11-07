@@ -52,6 +52,12 @@ class Member < ApplicationRecord
       .run(Rails.application.config.event_store)
   end
 
+  def withdrawl_history
+    RailsEventStore::Projection.from_stream(stream_name).init( ->{ Array.new })
+      .when(Events::Member::Withdrawl, ->(state, event) { state << event })
+      .run(Rails.application.config.event_store)
+  end
+
   def coin_balance(coin_id)
     RailsEventStore::Projection.from_stream(stream_name).init(->{ { total: BigDecimal.new(0) } })
       .when(Events::Member::Allocation, increment(coin_id))

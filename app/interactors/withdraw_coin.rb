@@ -1,14 +1,14 @@
 # frozen_string_literal: true
 
-class CreatePurchase
+class WithdrawCoin
   include Services::Execute
   include Interactor
 
   def call
     ActiveRecord::Base.transaction do
-      execute Services::Member::Purchase.new(purchase_params.merge(member_id: member_id))
+      execute Services::Member::Withdraw.new(withdrawl_params)
     end
-    context.message = "Purchase order created"
+    context.message = "Withdrawl successful"
   rescue Services::ValidationError => error
     context.fail!(message: error.messages.values.flatten.uniq.join(' | '))
   end
@@ -19,11 +19,7 @@ class CreatePurchase
     context.member_id
   end
 
-  def destination_coin_id
-    context.coin_id
-  end
-
-  def purchase_params
-    context.purchase_params
+  def withdrawl_params
+    context.withdrawl_params
   end
 end
