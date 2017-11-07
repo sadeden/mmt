@@ -1,0 +1,11 @@
+table width="100%"
+  thead
+    tr
+      th State
+      th Timestamp
+  tbody
+    - @purchase_order.history.each do |event|
+      tr
+        td= event.data[:state]
+        td= event.metadata[:timestamp]
+

@@ -1,0 +1,34 @@
+table width="100%"
+  thead
+    tr
+      th Source Coin
+      th Source Quantity
+      th Source Rate
+      th Destination Coin
+      th Destination Quantity
+      th Destination Rate
+      th Current State
+      th Member
+      th Actions
+  tbody
+    - @purchase_orders.each do |purchase_order|
+      tr
+        td= purchase_order.source_coin.code
+        td= number_to_currency(purchase_order.source_quantity.to_d / 10**purchase_order.source_coin.subdivision, precision: purchase_order.source_coin.subdivision, unit: '')
+        td= purchase_order.source_rate
+        td= purchase_order.destination_coin.code
+        td= number_to_currency(purchase_order.destination_quantity.to_d / 10**purchase_order.destination_coin.subdivision, precision: purchase_order.destination_coin.subdivision, unit: '')
+        td= purchase_order.destination_rate
+        td= purchase_order.state
+        td= purchase_order.member.email
+        td
+          .icons
+            = link_to admins_purchase_order_path(purchase_order), class: 'icon' do
+              i.fa.fa-eye.fa-lg
+            = link_to admins_purchase_order_in_progress_path(purchase_order), method: :patch, class: 'icon' do
+              i.fa.fa-spinner.fa-lg
+            = link_to admins_purchase_order_confirm_path(purchase_order), method: :patch, class: 'icon' do
+              i.fa.fa-check-square.fa-lg.blue
+            = link_to admins_purchase_order_cancel_path(purchase_order), method: :patch, class: 'icon' do
+              i.fa.fa-times.fa-lg.red
+

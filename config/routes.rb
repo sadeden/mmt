@@ -21,6 +21,12 @@ Rails.application.routes.draw do
     post '/coins/:id/load' => 'coins#load', as: :load_coin
     get '/coins/:id/history' => 'coins#history', as: :coin_history
 
+    resources :purchase_orders, only: [:index, :show] do
+      patch 'in_progress' => 'purchase_orders#in_progress', as: :in_progress
+      patch 'confirm' => 'purchase_orders#confirm', as: :confirm
+      patch 'cancel' => 'purchase_orders#cancel', as: :cancel
+    end
+
     resources :coins, only: [:index, :edit, :update], path_names: { edit: 'load' } do
       resources :allocations, only: [:new, :create]
     end

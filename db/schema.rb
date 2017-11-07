@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171030104608) do
+ActiveRecord::Schema.define(version: 20171107190500) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -99,6 +99,18 @@ ActiveRecord::Schema.define(version: 20171030104608) do
     t.index ["invited_by_type", "invited_by_id"], name: "index_members_on_invited_by_type_and_invited_by_id"
     t.index ["reset_password_token"], name: "index_members_on_reset_password_token", unique: true
     t.index ["username"], name: "index_members_on_username", unique: true
+  end
+
+  create_table "purchase_orders", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "source_coin_id"
+    t.string "destination_coin_id"
+    t.string "source_quantity"
+    t.string "destination_quantity"
+    t.string "source_rate"
+    t.string "destination_rate"
+    t.string "member_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
 end
