@@ -19,6 +19,8 @@ class Coin < ApplicationRecord
                    exclusion: { in: MagicMoneyTree::InaccessibleWords.all },
                    presence: true
 
+  before_validation :set_slug, on: :create
+
   def stream_name
     "Domain::Coin$#{id}"
   end
@@ -108,5 +110,9 @@ class Coin < ApplicationRecord
     return unless subdivision
     return unless (subdivision % 10).zero?
     errors.add :subdivision, "must be a multiple of 10"
+  end
+
+  def set_slug
+    self.slug = code
   end
 end

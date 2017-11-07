@@ -3,8 +3,7 @@
 require "./spec/rails_helper"
 
 describe Members::MembersController do
-  let(:portfolio) { create :portfolio }
-  let(:member) { portfolio.member }
+  let(:member) { create :member }
   let(:json) { JSON.parse(response.body) }
 
   before do

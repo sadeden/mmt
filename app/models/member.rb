@@ -29,7 +29,7 @@ class Member < ApplicationRecord
   validate :username_against_inaccessible_words
   validate :email_against_username
 
-  before_validation :adjust_slug, on: :update, if: proc { |m| m.username_changed? }
+  before_validation :set_slug, on: :update, if: proc { |m| m.username_changed? }
 
   attr_accessor :login
 

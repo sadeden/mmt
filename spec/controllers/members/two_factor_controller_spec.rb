@@ -1,8 +1,7 @@
 require 'rails_helper'
 
 describe Members::TwoFactorController, type: :controller, two_factor: true do
-  let(:portfolio) { create :portfolio }
-  let(:member) { portfolio.member }
+  let(:member) { create :member }
 
   before do
     sign_in member
@@ -50,7 +49,7 @@ describe Members::TwoFactorController, type: :controller, two_factor: true do
       let(:post_create) { post :create, params: { two_factor: { otp_delivery_method: 'app' } } }
 
       it "redirects to the edit page" do
-        expect(post_create).to redirect_to edit_member_settings_two_factor_path
+        expect(post_create).to redirect_to edit_settings_two_factor_path
       end
     end
 
@@ -58,7 +57,7 @@ describe Members::TwoFactorController, type: :controller, two_factor: true do
       let(:post_create) { post :create, params: { two_factor: { otp_delivery_method: 'bob' } } }
 
       it "redirects to the index page" do
-        expect(post_create).to redirect_to member_settings_two_factor_path
+        expect(post_create).to redirect_to settings_two_factor_path
       end
     end
   end
@@ -91,7 +90,7 @@ describe Members::TwoFactorController, type: :controller, two_factor: true do
       end
 
       it "redirects to index" do
-        expect(get_edit).to redirect_to member_settings_two_factor_path
+        expect(get_edit).to redirect_to settings_two_factor_path
       end
     end
 
@@ -101,7 +100,7 @@ describe Members::TwoFactorController, type: :controller, two_factor: true do
       end
 
       it "redirects to index" do
-        expect(get_edit).to redirect_to member_settings_two_factor_path
+        expect(get_edit).to redirect_to settings_two_factor_path
       end
     end
   end
@@ -116,7 +115,7 @@ describe Members::TwoFactorController, type: :controller, two_factor: true do
       end
 
       it "redirects to the edit page" do
-        expect(patch_update).to redirect_to member_settings_two_factor_path
+        expect(patch_update).to redirect_to settings_two_factor_path
       end
     end
 
@@ -126,7 +125,7 @@ describe Members::TwoFactorController, type: :controller, two_factor: true do
       before { allow(member).to receive(:authenticate_otp).and_return(false) }
 
       it "redirects to the index page" do
-        expect(patch_update).to redirect_to new_member_settings_two_factor_path
+        expect(patch_update).to redirect_to new_settings_two_factor_path
       end
     end
   end
@@ -135,7 +134,7 @@ describe Members::TwoFactorController, type: :controller, two_factor: true do
     let(:delete_destroy) { delete :destroy }
 
     it "redirects to the index page" do
-      expect(delete_destroy).to redirect_to member_settings_two_factor_path
+      expect(delete_destroy).to redirect_to settings_two_factor_path
     end
   end
 

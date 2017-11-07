@@ -3,8 +3,7 @@
 require 'rails_helper'
 
 describe Members::SettingsController, type: :controller do
-  let(:portfolio) { create :portfolio }
-  let(:member) { portfolio.member }
+  let(:member) { create :member }
 
   before do
     sign_in member

@@ -3,8 +3,7 @@
 require 'rails_helper'
 
 describe Members::PasswordsController, type: :controller, two_factor: true do
-  let(:portfolio) { create :portfolio }
-  let(:member) { portfolio.member }
+  let(:member) { create :member }
 
   before do
     sign_in member
@@ -44,7 +43,7 @@ describe Members::PasswordsController, type: :controller, two_factor: true do
       before { member.update!(two_factor_enabled: true, otp_delivery_method: 'app') }
 
       it "redirects back" do
-        expect(patch_update).to redirect_to new_member_settings_password_path
+        expect(patch_update).to redirect_to new_settings_password_path
       end
     end
   end
