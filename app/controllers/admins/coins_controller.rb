@@ -27,7 +27,7 @@ module Admins
     private
 
     def find_coin
-      @coin ||= Coin.friendly.find params[:id]
+      @coin ||= Coin.friendly.find(params[:id]).decorate
     end
 
     def load_coin

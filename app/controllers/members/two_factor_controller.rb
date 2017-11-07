@@ -19,9 +19,9 @@ module Members
       return unless setup_params[:otp_delivery_method]
       result = SetupTwoFactorAuthentication.call(member: current_member, setup_params: setup_params)
       if result.success?
-        redirect_to edit_member_settings_two_factor_path, notice: result.message
+        redirect_to edit_settings_two_factor_path, notice: result.message
       else
-        redirect_back fallback_location: member_settings_two_factor_path, error: result.message
+        redirect_back fallback_location: settings_two_factor_path, error: result.message
       end
     end
 
@@ -32,15 +32,15 @@ module Members
       return unless confirmation_params[:code]
       result = ConfirmTwoFactorAuthentication.call(member: current_member, authentication_code: confirmation_params[:code])
       if result.success?
-        redirect_to member_settings_two_factor_path, notice: result.message
+        redirect_to settings_two_factor_path, notice: result.message
       else
-        redirect_to new_member_settings_two_factor_path, error: result.message
+        redirect_to new_settings_two_factor_path, error: result.message
       end
     end
 
     def destroy
       result = DisableTwoFactorAuthentication.call(member: current_member)
-      redirect_to member_settings_two_factor_path, notice: result.message
+      redirect_to settings_two_factor_path, notice: result.message
     end
 
     def resend_code
@@ -63,7 +63,7 @@ module Members
     end
 
     def return_to_index
-      redirect_to member_settings_two_factor_path, notice: "You must disable two factor authentication before setting up again"
+      redirect_to settings_two_factor_path, notice: "You must disable two factor authentication before setting up again"
     end
 
     def confirmation_params

@@ -3,7 +3,8 @@
 module Admins
   class InvitationsController < Devise::InvitationsController
     before_action :verify_admin, except: [:edit, :update]
-    layout 'application', only: [:index, :new]
+    layout 'devise', only: [:edit]
+    layout 'admin', only: [:new]
 
     def create
       member = Member.invite! invitation_params

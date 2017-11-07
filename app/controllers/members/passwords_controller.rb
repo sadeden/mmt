@@ -11,7 +11,7 @@ module Members
         bypass_sign_in current_member
         redirect_to member_path(current_member), notice: @change_password.message
       else
-        redirect_back fallback_location: new_member_settings_password_path, alert: @change_password.message
+        redirect_back fallback_location: new_settings_password_path, alert: @change_password.message
       end
     end
 
