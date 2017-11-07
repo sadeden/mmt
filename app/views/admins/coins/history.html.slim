@@ -2,9 +2,9 @@
   .four.columns
     p
       | Current central reserve balance : 
-      strong= number_to_currency(@coin.central_reserve / 10**@coin.subdivision, precision: @coin.subdivision, unit: '')
+      strong= @coin.central_reserve_balance
   .four.columns
-    h2 #{@coin.name} (#{@coin.code}) Transaction History
+    h2 #{@coin.header} Transaction History
   .four.columns
     p
       | Current BTC exchange rate : 
@@ -21,7 +21,7 @@
         - @events.each do |event|
           tr
             td= event.class
-            td= event.data[:quantity] / 10**event.data[:subdivision]
+            td= event.data[:quantity].to_d / 10**event.data[:subdivision]
             td= event.data[:rate]
 
 p * ToP = Time of Purchase

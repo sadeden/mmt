@@ -5,6 +5,8 @@ module Members
     before_action :find_coin, only: [:show]
 
     def index
+      @crypto = Coin.crypto_with_balance(current_member)
+      @fiat = Coin.fiat_with_balance(current_member)
     end
 
     def show

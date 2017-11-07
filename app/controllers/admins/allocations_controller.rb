@@ -16,7 +16,6 @@ module Admins
       end
     end
 
-
     private
 
     def allocate_coin

@@ -6,6 +6,7 @@ class Coin < ApplicationRecord
 
   scope :ordered, -> { order(:code) }
   scope :crypto, -> { where(crypto_currency: true) }
+  scope :fiat, -> { where.not(crypto_currency: true) }
   scope :not_self, ->(coin_id) { where.not(id: coin_id) }
 
   attr_readonly :code, :subdivision
@@ -56,6 +57,16 @@ class Coin < ApplicationRecord
   # @return The amount of this currency that buys one BTC
   def btc_rate
     crypto_currency ? crypto_btc_rate : fiat_btc_rate
+  end
+
+  class << self
+    def crypto_with_balance(member)
+      crypto.select { |coin| !member.coin_balance(coin.id).zero? }
+    end
+
+    def fiat_with_balance(member)
+      fiat.select { |coin| !member.coin_balance(coin.id).zero? }
+    end
   end
 
   private

@@ -12,12 +12,13 @@ html
     nav.primary
       ul.left
         li= link_to 'Dashboard', root_path, class: 'button button-primary'
-        li= link_to 'Portfolio', coins_path, class: 'button button-primary'
         li= link_to 'Profile', member_path(current_member), class: 'button button-primary'
-        li= link_to 'Settings', member_settings_path, class: 'button button-primary'
+        li= link_to 'Portfolio', coins_path, class: 'button button-primary'
+        li= link_to 'Trade', purchases_path, class: 'button button-primary'
       ul.right
         - if current_member&.admin?
-          li= link_to 'Admin Dashboard', admins_root_path, class: "button button-primary"
+          li= link_to 'Admin', admins_root_path, class: "button button-primary"
+        li= link_to 'Settings', settings_root_path, class: 'button button-primary'
         li= link_to 'Log out', destroy_member_session_path, method: :delete, authenticity_token: true, class: "button button-primary"
     .container
       = yield

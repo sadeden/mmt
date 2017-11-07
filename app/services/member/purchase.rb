@@ -61,7 +61,7 @@ module Services
       def values_square
         source_value = source_coin.store_as_integer(source_quantity) * source_rate.to_d
         destination_value = destination_coin.store_as_integer(destination_quantity) * destination_rate.to_d
-        return if (source_value - destination_value).zero?
+        return if (source_value.round(0) - destination_value.round(0)).zero?
         self.errors.add :values_square, "Invalid purchase"
       end
 

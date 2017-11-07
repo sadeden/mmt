@@ -35,7 +35,7 @@ $(document).on('turbolinks:load', function () {
       var quantity = destination_quantity.val();
       if (!quantity || /^\s*$/.test(quantity) || !source_coin_id || /^\s*$/.test(source_coin_id)) { return; }
       $.ajax({
-        url: "/trade/coins/" + source_coin_id,
+        url: "/coins/" + source_coin_id,
         type: "GET",
         dataType: "json",
         success: calculateCost

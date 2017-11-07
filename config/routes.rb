@@ -25,14 +25,13 @@ Rails.application.routes.draw do
       resources :allocations, only: [:new, :create]
     end
 
-    resources :members, only: [:index, :new, :create, :edit]
+    resources :members, only: [:index, :new, :create]
   end
 
-  namespace :settings, module: :members, as: :member_settings do
-    get '/' => 'settings#index'
+  namespace :settings, module: :members do
+    root to: 'settings#index'
     resource :password, only: [:new, :update]
 
-    # ==> Two Factor Authentication
     get 'two_factor_authentication' => 'two_factor#index', as: :two_factor
     get 'two_factor_authentication/resend_code' => 'two_factor#resend_code', as: :resend_two_factor_code
     get 'two_factor_authentication/recovery_codes' => 'recovery_codes#show', as: :two_factor_recovery_codes
@@ -48,10 +47,13 @@ Rails.application.routes.draw do
   scope module: :members do
     root to: "dashboard#index"
 
+    resources :coins, only: [:index]
+    resources :coins, only: [:show], format: :js
+
     scope path: :trade do
-      resources :coins, only: [:index, :show] do
-        post '/purchases' => 'purchases#create', as: :purchase
-      end
+      root to: 'purchases#index', as: :purchases
+      get '/:coin_id' => 'purchases#new', as: :new_purchase
+      post '/:coin_id/' => 'purchases#create', as: :purchase
     end
 
     resources :members, path: '/', only: [:show, :update]

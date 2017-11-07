@@ -2,14 +2,20 @@
 
 module Members
   class PurchasesController < ApplicationController
-    before_action :find_coin, only: [:create]
+    before_action :find_coin, only: [:new, :create]
     before_action :create_purchase, only: [:create]
+
+    def index
+    end
+
+    def new
+    end
 
     def create
       if @purchase.success?
-        redirect_to coin_path(@coin), notice: @purchase.message
+        redirect_to purchases_path(@coin), notice: @purchase.message
       else
-        redirect_to coin_path(@coin), alert: @purchase.message
+        redirect_to new_purchase_path(@coin), alert: @purchase.message
       end
     end
 
@@ -23,7 +29,7 @@ module Members
     end
 
     def find_coin
-      @coin = Coin.friendly.find params[:coin_id]
+      @coin = Coin.friendly.find(params[:coin_id]).decorate
     end
 
     def purchase_params

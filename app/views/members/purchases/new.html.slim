@@ -1,6 +1,6 @@
-| Your current balance in #{@coin.name} is #{current_member.coin_balance(@coin.id)}
+| Your current balance in #{@coin.name} is #{@coin.balance}
 
-= form_for :purchase, url: coin_purchase_path(@coin), method: :post do |f|
+= form_for :purchase, url: purchase_path(@coin), method: :post do |f|
   .row
     = f.label :current_market_rate
     span#destination_rate= @coin.btc_rate
