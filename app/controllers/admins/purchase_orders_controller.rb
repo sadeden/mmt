@@ -13,7 +13,7 @@ module Admins
     end
 
     def cancel
-      if @purchase_order.cancel!
+      if cancel_purchase.success?
         redirect_to admins_purchase_orders_path, notice: "Purchase order cancelled "
       else
         redirect_to admins_purchase_orders_path, notice: "Failed to cancel purchase order"
@@ -40,6 +40,13 @@ module Admins
 
     def find_purchase_order
       @purchase_order = PurchaseOrder.find(params[:purchase_order_id])
+    end
+
+    def cancel_purchase
+      @cancel_purchase ||= CancelPurchase.call(cancellation_params: {
+        state: :cancelled,
+        purchase_order_id: @purchase_order.id
+      })
     end
   end
 end

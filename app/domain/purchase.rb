@@ -6,7 +6,7 @@ module Domain
 
     def initialize(id:, state:)
       @purchase_order = ::PurchaseOrder.find(id)
-      @state = purchase_order.state
+      @state = state
     end
 
     AlreadyPending = Class.new(StandardError)
@@ -20,7 +20,7 @@ module Domain
 
       apply Events::Purchase::Pending.new(data: {
         purchase_order_id: id,
-        state: :pending
+        state: state
       })
     end
 
@@ -32,7 +32,7 @@ module Domain
 
       apply Events::Purchase::InProgress.new(data: {
         purchase_order_id: id,
-        state: :in_progress
+        state: state
       })
     end
 
@@ -43,7 +43,7 @@ module Domain
 
       apply Events::Purchase::Confirmed.new(data: {
         purchase_order_id: id,
-        state: :confirm
+        state: state
       })
     end
 

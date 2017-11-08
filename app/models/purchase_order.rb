@@ -6,7 +6,7 @@ class PurchaseOrder < ApplicationRecord
   alias :aggregate_id :id
 
   def handler_class
-    Handlers::Purchase::Create
+    Handlers::Purchase::Pending
   end
 
   def stream

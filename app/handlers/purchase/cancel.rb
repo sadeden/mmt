@@ -1,11 +1,13 @@
+# frozen_string_literal: true
+
 module Handlers
   module Purchase
-    class Create
+    class Cancel
       include Command::Handler
 
       def call(command)
         with_aggregate(Domain::Purchase, command.aggregate_id, { state: command.state }) do |purchase|
-          purchase.pending!
+          purchase.cancel!
         end
       end
 
