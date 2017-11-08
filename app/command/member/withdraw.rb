@@ -1,6 +1,8 @@
-module Services
+# frozen_string_literal: true
+
+module Commands
   module Member
-    class Withdraw < Services::Base
+    class Withdraw < Command::Base
       attr_accessor :coin_id,
                     :member_id,
                     :quantity,
@@ -15,10 +17,6 @@ module Services
       validate :less_than_central_reserve
 
       alias :aggregate_id :member_id
-
-      def handler_class
-        Handlers::Member::Withdraw
-      end
 
       private
 

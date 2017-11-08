@@ -21,7 +21,7 @@
         - @events.each do |event|
           tr
             td= event.class
-            td= event.data[:quantity].to_d / 10**event.data[:subdivision]
+            td= event.data[:quantity].to_d / 10**@coin.subdivision
             td= event.data[:rate]
 
 p * ToP = Time of Purchase

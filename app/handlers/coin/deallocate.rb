@@ -3,21 +3,21 @@
 module Handlers
   module Coin
     class Deallocate
-      include Services::Handler
+      include Command::Handler
 
-      def call(service)
-        with_aggregate(Domain::Coin, service.aggregate_id, attributes(service)) do |coin|
+      def call(command)
+        with_aggregate(Domain::Coin, command.aggregate_id, attributes(command)) do |coin|
           coin.deallocate!
         end
       end
 
       private
 
-      def attributes(service)
+      def attributes(command)
         {
-          coin_id: service.coin_id,
-          quantity: service.quantity,
-          rate: service.rate,
+          member_id: command.coin_id,
+          quantity: command.quantity,
+          rate: command.rate,
         }
       end
     end

@@ -3,23 +3,24 @@
 module Admins
   class AllocationsController < AdminsController
     before_action :find_coin
-    before_action :allocate_coin, only: [:create]
 
     def new
     end
 
     def create
-      if @allocation.success?
-        redirect_to admins_coins_path, notice: @allocation.message
+      if allocation.success?
+        redirect_to admins_coins_path, notice: allocation.message
       else
-        redirect_to new_admins_coin_allocation_path(@coin.id), notice: @allocation.message
+        redirect_to new_admins_coin_allocation_path(@coin.id), notice: allocation.message
       end
     end
 
     private
 
-    def allocate_coin
-      @allocation = AllocateCoin.call(allocation_params: allocation_params.merge(coin_id: @coin.id))
+    def allocation
+      @allocation ||= AllocateCoin.call(allocation_params: allocation_params.merge(
+        coin_id: @coin.id
+      ))
     end
 
     def find_coin

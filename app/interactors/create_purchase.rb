@@ -1,15 +1,15 @@
 # frozen_string_literal: true
 
 class CreatePurchase
-  include Services::Execute
+  include Command::Execute
   include Interactor
 
   def call
     ActiveRecord::Base.transaction do
-      execute Services::Member::Purchase.new(purchase_params.merge(member_id: member_id))
+      execute Command::Member::Purchase.new(purchase_params.merge(member_id: member_id))
     end
     context.message = "Purchase order created"
-  rescue Services::ValidationError => error
+  rescue Command::ValidationError => error
     context.fail!(message: error.messages.values.flatten.uniq.join(' | '))
   end
 

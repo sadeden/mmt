@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-module Services
+module Command
   module Member
-    class Deallocate < Services::Base
+    class Deallocate < Command::Base
       attr_accessor :coin_id,
                     :member_id,
                     :quantity,
@@ -17,9 +17,7 @@ module Services
 
       alias :aggregate_id :member_id
 
-      def handler_class
-        Handlers::Member::Deallocate
-      end
+      private
 
       def ensure_less_than_balance
         coin = ::Coin.find coin_id

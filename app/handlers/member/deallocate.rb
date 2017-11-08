@@ -3,7 +3,7 @@
 module Handlers
   module Member
     class Deallocate
-      include Services::Handler
+      include Command::Handler
 
       def call(service)
         with_aggregate(Domain::Member, service.aggregate_id, attributes(service)) do |member|

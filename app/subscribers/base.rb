@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-module Listeners
+module Subscribers
   class Base
-    include Services::Execute
+    include Command::Execute
   end
 end
 

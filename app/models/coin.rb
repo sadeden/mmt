@@ -4,6 +4,7 @@ class Coin < ApplicationRecord
   extend FriendlyId
   friendly_id :code, use: :slugged
 
+
   scope :ordered, -> { order(:code) }
   scope :crypto, -> { where(crypto_currency: true) }
   scope :fiat, -> { where.not(crypto_currency: true) }

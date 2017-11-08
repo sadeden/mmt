@@ -1,23 +1,23 @@
 # frozen_string_literal: true
 
-module Handlers
+class Handlers
   module Coin
     class Allocate
-      include Services::Handler
+      include Command::Handler
 
-      def call(service)
-        with_aggregate(Domain::Coin, service.aggregate_id, attributes(service)) do |coin|
+      def call(command)
+        with_aggregate(Domain::Coin, command.aggregate_id, attributes(command)) do |coin|
           coin.allocate!
         end
       end
 
       private
 
-      def attributes(service)
+      def attributes(command)
         {
-          coin_id: service.coin_id,
-          quantity: service.quantity,
-          rate: service.rate,
+          member_id: command.member_id,
+          quantity: command.quantity,
+          rate: command.rate,
         }
       end
     end

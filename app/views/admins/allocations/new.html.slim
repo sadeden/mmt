@@ -6,10 +6,10 @@ h2 Allocate #{@coin.name} (#{@coin.code})
   br
   .row
     = f.label :quantity
-    = f.number_field :quantity, step: :any
+    = f.number_field :quantity, value: number_with_precision(0, precision: @coin.subdivision, unit: ''), step: :any
   .row
     label BTC rate
-    = f.number_field :rate, step: :any
+    = f.number_field :rate, value: number_with_precision(@coin.btc_rate, precision: @coin.subdivision, unit: ''), step: :any
   br
   .row
     = f.submit :allocate

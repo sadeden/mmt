@@ -1,14 +1,14 @@
 # frozen_string_literal: true
 
-module Listeners
+module Subscribers
   module Members
-    class Purchase < Listeners::Base
+    class Purchase < Subscribers::Base
 
       def call(event)
-        execute Services::Member::Deallocate.new(deallocation_attributes(event))
-        execute Services::Coin::Allocate.new(deallocation_attributes(event))
-        execute Services::Coin::Deallocate.new(allocation_attributes(event))
-        execute Services::Member::Allocate.new(allocation_attributes(event))
+        execute Command::Member::Deallocate.new(deallocation_attributes(event))
+        execute Command::Coin::Allocate.new(deallocation_attributes(event))
+        execute Command::Coin::Deallocate.new(allocation_attributes(event))
+        execute Command::Member::Allocate.new(allocation_attributes(event))
       end
 
       private

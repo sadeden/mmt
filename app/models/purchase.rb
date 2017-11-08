@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-module Services
+module Command
   module Member
-    class Purchase < Services::Base
+    class Purchase < Command::Base
       attr_accessor :source_coin_id,
                     :source_rate,
                     :source_quantity,

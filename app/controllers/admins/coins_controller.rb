@@ -3,7 +3,6 @@
 module Admins
   class CoinsController < AdminsController
     before_action :find_coin, only: [:edit, :load, :history]
-    before_action :load_coin, only: [:load]
 
     def index
       @coins = Coin.all
@@ -13,10 +12,10 @@ module Admins
     end
 
     def load
-      if @load_coin.success?
-        redirect_to admins_coins_path, notice: @load_coin.notice
+      if load_coin.success?
+        redirect_to admins_coins_path, notice: load_coin.notice
       else
-        redirect_to admins_coins_path, error: @load_coin.error
+        redirect_to admins_coins_path, error: load_coin.error
       end
     end
 
@@ -31,7 +30,7 @@ module Admins
     end
 
     def load_coin
-      @load_coin = LoadCoin.call(load_params: load_params.merge(
+      @load_coin ||= LoadCoin.call(load_params: load_params.merge(
         coin_id: @coin.id,
         member_id: current_member.id
       ))

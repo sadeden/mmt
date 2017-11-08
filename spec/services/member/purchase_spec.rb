@@ -2,12 +2,12 @@
 
 require 'rails_helper'
 
-describe Services::Member::Purchase, type: :service do
+describe Command::Member::Purchase, type: :service do
   let(:member) { create :member }
 
 
   describe "#handler_class" do
-    let(:service) { Services::Member::Purchase.new({}) }
+    let(:service) { Command::Member::Purchase.new({}) }
 
     it "returns the handler class" do
       expect(service.handler_class).to eq Handlers::Member::Purchase
@@ -30,7 +30,7 @@ describe Services::Member::Purchase, type: :service do
         }
       end
 
-      let(:service) { Services::Member::Purchase.new(purchase_params) }
+      let(:service) { Command::Member::Purchase.new(purchase_params) }
 
       it "is valid"do
         expect(service).to be_valid

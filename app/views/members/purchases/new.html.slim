@@ -8,7 +8,7 @@
   br
   .row
     = f.label :quantity
-    = f.text_field :destination_quantity, id: 'destination_quantity'
+    = f.number_field :destination_quantity, step: :any, id: 'destination_quantity'
   br
   .row
     = f.label :purchase_with

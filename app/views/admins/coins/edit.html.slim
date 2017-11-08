@@ -3,11 +3,11 @@ h2 Load #{@coin.code}
 = form_for [:admins, @coin], url: admins_load_coin_path(@coin), method: :post do |f|
   .row
     = f.label :quantity
-    = text_field_tag 'coin[quantity]', number_with_precision(0, precision: @coin.subdivision), required: true
+    = number_field_tag 'coin[quantity]', number_with_precision(0, precision: @coin.subdivision), step: :any, required: true
   br
   .row
     label BTC Rate
-    = text_field_tag 'coin[rate]', number_with_precision(0, precision: @coin.subdivision), required: true
+    = number_field_tag 'coin[rate]', number_with_precision(@coin.btc_rate, precision: @coin.subdivision), step: :any, required: true
   br
   .row
     = f.submit :load, class: 'button button-primary'

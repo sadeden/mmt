@@ -1,4 +1,4 @@
-module Services
+module Command
   class Base
     include ActiveModel::Model
     include ActiveModel::Validations
@@ -9,7 +9,7 @@ module Services
     end
 
     def validate!
-      raise Services::ValidationError.new(errors.messages) unless valid?
+      raise Command::ValidationError.new(errors.messages) unless valid?
     end
 
     def persisted?

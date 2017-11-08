@@ -3,22 +3,20 @@
 module Handlers
   module Member
     class Withdraw
-      include Services::Handler
+      include Command::Handler
 
-      def call(transaction)
-        with_aggregate(Domain::Member, transaction.aggregate_id, attributes(transaction)) do |member|
+      def call(command)
+        with_aggregate(Domain::Member, command.aggregate_id, attributes(command)) do |member|
           member.withdraw!
         end
       end
 
       private
 
-      def attributes(transaction)
+      def attributes(command)
         {
-          coin_id: transaction.coin_id,
-          member_id: transaction.member_id,
-          quantity: transaction.quantity,
-          rate: transaction.initial_btc_rate
+          coin_id: command.coin_id,
+          quantity: command.quantity,
         }
       end
     end

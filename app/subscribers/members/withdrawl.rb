@@ -1,9 +1,9 @@
-module Listeners
+module Subscribers
   module Members
-    class Withdrawl < Listeners::Base
+    class Withdrawl < Subscribers::Base
 
       def call(event)
-        execute Services::Members::Deallocation.new(withdrawl_attributes)
+        execute Command::Members::Deallocation.new(withdrawl_attributes)
       end
 
       private
