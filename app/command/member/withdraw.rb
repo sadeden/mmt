@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module Commands
+module Command
   module Member
     class Withdraw < Command::Base
       attr_accessor :coin_id,

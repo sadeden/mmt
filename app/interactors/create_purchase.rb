@@ -6,7 +6,7 @@ class CreatePurchase
 
   def call
     ActiveRecord::Base.transaction do
-      execute Command::Member::Purchase.new(purchase_params.merge(member_id: member_id))
+      execute PurchaseOrder.create!(context.purchase_params.merge(member_id: member_id))
     end
     context.message = "Purchase order created"
   rescue Command::ValidationError => error
@@ -14,6 +14,10 @@ class CreatePurchase
   end
 
   private
+
+  def purchase_order
+    @purchase_order ||= ::PurchaseOrder.create!(context.purchase_params).tap(&:pending!)
+  end
 
   def member_id
     context.member_id

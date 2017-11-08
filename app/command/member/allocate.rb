@@ -8,18 +8,15 @@ module Command
                     :quantity,
                     :rate
 
-      validates :member_id,
-                :coin_id,
-                :quantity,
-                :rate,
-                presence: true
+      validates :member_id, :coin_id, :quantity, :rate, presence: true
 
-      validates :rate,
-                :quantity,
-                numericality: { greater_than: 0 }
+      validates :rate, :quantity, numericality: { greater_than: 0 }
 
       alias :aggregate_id :member_id
 
+      def handler_class
+        Handlers::Member::Allocate
+      end
     end
   end
 end

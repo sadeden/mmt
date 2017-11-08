@@ -11,5 +11,4 @@ class LoadCoin
     Rails.logger.error "\n\n#{error.messages}\n\n#{error.backtrace}\n\n"
     context.fail!(message: error.messages.values.flatten.uniq.join(' | '))
   end
-
 end

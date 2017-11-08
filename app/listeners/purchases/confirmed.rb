@@ -7,10 +7,10 @@ module Listeners
       def call(event)
         ActiveRecord::Base.transaction do
           purchase_order = ::PurchaseOrder.find(event.data[:purchase_order_id])
-          execute Services::Member::Deallocate.new(deallocation_attributes(purchase_order))
-          execute Services::Coin::Allocate.new(deallocation_attributes(purchase_order))
-          execute Services::Coin::Deallocate.new(allocation_attributes(purchase_order))
-          execute Services::Member::Allocate.new(allocation_attributes(purchase_order))
+          execute Command::Member::Deallocate.new(deallocation_attributes(purchase_order))
+          execute Command::Coin::Allocate.new(deallocation_attributes(purchase_order))
+          execute Command::Coin::Deallocate.new(allocation_attributes(purchase_order))
+          execute Command::Member::Allocate.new(allocation_attributes(purchase_order))
           purchase_order.complete!
         end
       end
