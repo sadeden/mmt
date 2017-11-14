@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Subscribers
-  module Withdraw
+  module Withdrawl
     class Confirmed
 
       def call(event)

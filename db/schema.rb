@@ -100,23 +100,13 @@ ActiveRecord::Schema.define(version: 20171114100551) do
     t.index ["username"], name: "index_members_on_username", unique: true
   end
 
-  create_table "notifications", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.integer "recipient_id"
-    t.string "notification_type"
-    t.string "title"
-    t.text "body"
-    t.boolean "read", default: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["recipient_id"], name: "index_notifications_on_recipient_id"
-  end
-
   create_table "withdrawl_requests", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "member_id"
     t.uuid "coin_id"
     t.uuid "last_changed_by_id"
     t.integer "quantity"
     t.uuid "transaction_id"
+    t.string "state", default: "pending"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["coin_id"], name: "index_withdrawl_requests_on_coin_id"
