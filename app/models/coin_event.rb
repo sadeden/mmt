@@ -23,7 +23,6 @@ class CoinEvent < ApplicationRecord
   private
 
   def coin_assets
-    binding.pry
     return true if exchange? && triggered_by.destination_coin != coin
     return true if assets.abs < coin.assets
     self.errors.add :assets, "Insufficient assets"

@@ -12,7 +12,8 @@ module Transaction
     #                                                       #
     #             Source is ALWAYS a debit                  #
     #          Destination is ALWAYS a credit               #
-    #      Each transaction must have 2 event entries       #
+    #      Each transaction must always have an equal       #
+    #             number of event entries                   #
     #                                                       #
     #########################################################
 
