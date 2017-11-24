@@ -12,31 +12,20 @@ class CoinEvent < ApplicationRecord
     Rails.env.development? ? false : !new_record?
   end
 
-  validates :liability,
-            :available,
+  validates :assets,
             :triggered_by,
             presence: true
 
-  validates :liability,
-            :available,
-            numericality: { only_integer: true }
+  validates :assets, numericality: { only_integer: true }
 
-  validate :coin_liability, unless: proc { deposit_event? || exchange_event? }
-
-  validate :exchange_liability, if: :exchange_event?
+  validate :coin_assets, unless: :deposit?
 
   private
 
-  def coin_liability
-    return true if liability.abs < coin.reload.available
-    self.errors.add :liability, "Insufficient funds"
-  end
-
-  def exchange_liability
-    if destination_coin_event?
-      binding.pry
-      return true if liability.abs < coin.reload.available
-      self.errors.add :liability, "Insufficient funds"
-    end
+  def coin_assets
+    binding.pry
+    return true if exchange? && triggered_by.destination_coin != coin
+    return true if assets.abs < coin.assets
+    self.errors.add :assets, "Insufficient assets"
   end
 end

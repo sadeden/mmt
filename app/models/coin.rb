@@ -7,6 +7,9 @@ class Coin < ApplicationRecord
 
   BTC_SUBDIVISION = 8
 
+  has_many :source_transactions, as: :source
+  has_many :destination_transactions, as: :destination
+
   has_many :coin_events
   has_many :member_coin_events
   has_many :members, through: :member_coin_events
@@ -27,26 +30,25 @@ class Coin < ApplicationRecord
   validates :subdivision, :code, presence: true
   validates :subdivision, numericality: { greater_than_or_equal_to: 0 }
 
-  validates :liability, :available, numericality: { greater_than_or_equal_to: 0 }
+  validates :assets, numericality: { greater_than_or_equal_to: 0 }
 
-  def publish!(liability:, available:, transaction_id:)
+  def publish!(assets:, transaction_id:)
     transaction_id.coin_events.build(
-      liability: liability,
-      available: available,
+      assets: assets,
       coin: self
     ).valid?
   end
 
   def total
-    liability + available
+    liability + assets
   end
 
   def liability
-    coin_events.sum(:liability)
+    member_coin_events.sum(:liability)
   end
 
-  def available
-    coin_events.sum(:available)
+  def assets
+    coin_events.sum(:assets)
   end
 
   # ===> Live value and rate
